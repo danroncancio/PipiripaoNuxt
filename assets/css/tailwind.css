@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Polly";
+  src: url("assets/fonts/polly-rounded-regular.otf");
+}
+
+@font-face {
+  font-family: "PollyBold";
+  src: url("assets/fonts/polly-rounded-bold.otf");
+}

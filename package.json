@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "devDependencies": {
+    "@iconify/vue": "^3.2.1",
+    "@nuxtjs/tailwindcss": "^5.1.2",
+    "@tailwindcss/typography": "^0.5.2",
+    "@types/three": "^0.141.0",
+    "nuxt": "3.0.0-rc.3",
+    "prettier": "^2.6.2",
+    "prettier-plugin-tailwindcss": "^0.1.11"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.1.9",
+    "chroma-js": "^2.4.2",
+    "daisyui": "^2.15.2",
+    "markdown-it": "^13.0.1",
+    "mercadopago": "^1.5.13",
+    "pinia": "^2.0.14",
+    "swiper": "^8.2.2",
+    "three": "^0.141.0"
+  }
+}
