@@ -10,7 +10,8 @@ const modules = ref([Navigation, Autoplay]);
 const components = { Swiper, SwiperSlide };
 
 const config = useRuntimeConfig();
-let baseURL = config.strapiUrl || "http://localhost:1337";
+let baseURL =
+  process.env.NUXT_STRAPI_URL || config.strapiUrl || "http://localhost:1337";
 
 const state = reactive({
   slideNumber: 4,
