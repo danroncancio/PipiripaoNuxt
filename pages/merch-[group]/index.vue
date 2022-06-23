@@ -1,6 +1,7 @@
 <script setup>
 const config = useRuntimeConfig();
-let baseURL = config.strapiUrl || "http://localhost:1337";
+let baseURL =
+  process.env.NUXT_STRAPI_URL || config.strapiUrl || "http://localhost:1337";
 const route = useRoute();
 
 let clothing;

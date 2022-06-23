@@ -11,7 +11,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const config = useRuntimeConfig();
-let baseURL = config.strapiUrl || "http://localhost:1337";
+let baseURL = process.env.NUXT_STRAPI_URL || config.strapiUrl || "http://localhost:1337";
 const route = useRoute();
 
 const modules = ref([Navigation, Pagination, EffectFade, Autoplay]);

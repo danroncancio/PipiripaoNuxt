@@ -6,7 +6,8 @@ useHead({
 });
 
 const config = useRuntimeConfig();
-let baseURL = config.strapiUrl || "http://localhost:1337";
+let baseURL =
+  process.env.NUXT_STRAPI_URL || config.strapiUrl || "http://localhost:1337";
 const shoppingCart = useCart();
 const state = reactive({
   quantity: 0,

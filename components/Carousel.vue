@@ -11,7 +11,8 @@ const modules = ref([Navigation, Pagination, EffectFade, Autoplay]);
 const components = { Swiper, SwiperSlide };
 
 const config = useRuntimeConfig();
-let baseURL = config.strapiUrl || "http://localhost:1337";
+let baseURL =
+  process.env.NUXT_STRAPI_URL || config.strapiUrl || "http://localhost:1337";
 
 const carousel = await $fetch("/api/carousel", {
   method: "GET",
