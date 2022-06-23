@@ -23,16 +23,19 @@ export const useCart = defineStore("cart", {
   },
   actions: {
     add(product: Product) {
+      console.log("cart add");
       this.products.push(product);
-      console.log(this.products, this.products.length);
+      //console.log(this.products, this.products.length);
     },
     remove(sku: string, color: string) {
-      console.log(sku, color);
+      console.log("cart remove");
+      //console.log(sku, color);
       this.products = this.products.filter(
         (product) => product.sku !== sku || product.color !== color
       );
     },
     reset() {
+      console.log("cart reset");
       this.products = [];
     },
   },

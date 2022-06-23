@@ -13,20 +13,23 @@ onMounted(() => {
   //shoppingCart = JSON.parse(localStorage.getItem('shoppingCart') || []);
   //console.log(JSON.parse(localStorage.getItem('shoppingCart')).products.length);
   if (localStorage.getItem("shoppingCart") !== null) {
+    console.log("nav cart mounted");
     shoppingCart.reset();
-    JSON.parse(localStorage.getItem("shoppingCart")).products.forEach((ele) => {
+    localStorage.getItem("shoppingCart").products.forEach((ele) => {
       shoppingCart.add(ele);
     });
   }
 });
 
 watch(shoppingCart, (newValue) => {
+  console.log("nav cart watched");
   state.subtotal = 0;
-  console.log(newValue);
   if (shoppingCart.products.length > 0) {
     shoppingCart.products.forEach((products) => {
       state.subtotal += products.price * products.quantity;
-      localStorage.setItem("shoppingCart", JSON.stringify(newValue));
+      console.log("nav cart before fucked", newValue);
+      localStorage.setItem("shoppingCart", newValue);
+      console.log("nav cart after fucked");
     });
   } else {
     localStorage.removeItem("shoppingCart");
@@ -117,7 +120,7 @@ watch(shoppingCart, (newValue) => {
         <NuxtLink to="/">
           <img class="w-56" src="/img/logoHeader.png" alt="logo" srcset="" />
         </NuxtLink>
-        <ul class="menu menu-horizontal z-10 mt-2 gap-3">
+        <ul class="menu menu-horizontal z-10 mt-4 mb-2 gap-3">
           <li tabindex="0">
             <NuxtLink to="/merch-tops">TOPS</NuxtLink>
             <ul class="rounded-box bg-primary p-2 text-base-100">

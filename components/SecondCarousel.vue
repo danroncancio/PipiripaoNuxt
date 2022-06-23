@@ -19,10 +19,11 @@ const carousel = await $fetch("/api/carousel", {
   baseURL,
   params: {
     populate: "*",
+    "filters[Type][$eq]": "BottomCarousel",
   },
 })
   .then((res) => {
-    return res.data[1].attributes.Image.data;
+    return res.data[0].attributes.Images.data;
   })
   .catch((err) => {
     console.error(err);

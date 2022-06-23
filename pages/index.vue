@@ -2,11 +2,12 @@
 let baseURL = "http://localhost:1337";
 
 // fetching the body images
-const images = await $fetch("/api/index-images", {
+const images = await $fetch("/api/carousel", {
   method: "GET",
   baseURL,
   params: {
     populate: "*",
+    "filters[Type][$eq]": "MidImages",
   },
 })
   .then((res) => {
@@ -15,6 +16,7 @@ const images = await $fetch("/api/index-images", {
   .catch((err) => {
     console.error(err);
   });
+console.log(images);
 </script>
 
 <template>
@@ -33,7 +35,7 @@ const images = await $fetch("/api/index-images", {
         <img
           class="h-full w-full object-cover xl:rounded-box"
           v-for="image in images"
-          :key="image.id"
+          :key="image.attributes.id"
           :src="baseURL + image.attributes.url"
           alt=""
           srcset=""

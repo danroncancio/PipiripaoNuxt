@@ -20,7 +20,7 @@ const carousel = await $fetch("/api/carousel", {
   },
 })
   .then((res) => {
-    return res.data[0].attributes.Image.data;
+    return res.data[0].attributes.Images.data;
   })
   .catch((err) => {
     console.error(err);
