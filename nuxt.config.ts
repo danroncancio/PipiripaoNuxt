@@ -8,7 +8,4 @@ export default defineNuxtConfig({
       strapiUrl: process.env.NUXT_STRAPI_URL,
     },
   },
-  nitro: {
-    preset: "node-server",
-  },
 });
