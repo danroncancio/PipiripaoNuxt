@@ -1,5 +1,6 @@
 <script setup>
-let baseURL = "http://localhost:1337";
+const config = useRuntimeConfig();
+let baseURL = config.strapiUrl || "http://localhost:1337";
 
 // fetching the body images
 const images = await $fetch("/api/carousel", {

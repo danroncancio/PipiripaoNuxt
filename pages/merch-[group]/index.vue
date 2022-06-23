@@ -1,5 +1,6 @@
 <script setup>
-const baseURL = "http://localhost:1337";
+const config = useRuntimeConfig();
+let baseURL = config.strapiUrl || "http://localhost:1337";
 const route = useRoute();
 
 let clothing;

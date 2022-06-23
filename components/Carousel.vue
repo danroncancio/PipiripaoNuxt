@@ -10,7 +10,8 @@ import "swiper/css/pagination";
 const modules = ref([Navigation, Pagination, EffectFade, Autoplay]);
 const components = { Swiper, SwiperSlide };
 
-let baseURL = "http://localhost:1337";
+const config = useRuntimeConfig();
+let baseURL = config.strapiUrl || "http://localhost:1337";
 
 const carousel = await $fetch("/api/carousel", {
   method: "GET",

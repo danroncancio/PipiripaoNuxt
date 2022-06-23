@@ -10,7 +10,8 @@ import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const baseURL = "http://localhost:1337";
+const config = useRuntimeConfig();
+let baseURL = config.strapiUrl || "http://localhost:1337";
 const route = useRoute();
 
 const modules = ref([Navigation, Pagination, EffectFade, Autoplay]);

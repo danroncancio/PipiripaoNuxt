@@ -9,7 +9,9 @@ import "swiper/css/pagination";
 const modules = ref([Navigation, Autoplay]);
 const components = { Swiper, SwiperSlide };
 
-let baseURL = "http://localhost:1337";
+const config = useRuntimeConfig();
+let baseURL = config.strapiUrl || "http://localhost:1337";
+
 const state = reactive({
   slideNumber: 4,
 });
