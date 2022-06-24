@@ -14,7 +14,7 @@ const config = useRuntimeConfig();
 let baseURL =
   process.env.NUXT_STRAPI_URL || config.strapiUrl || "http://localhost:1337";
 
-const carousel = await $fetch("/api/carousel", {
+const carousel = await $fetch("/api/carousels", {
   method: "GET",
   baseURL,
   params: {

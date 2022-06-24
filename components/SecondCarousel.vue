@@ -17,7 +17,7 @@ const state = reactive({
   slideNumber: 4,
 });
 
-const carousel = await $fetch("/api/carousel", {
+const carousel = await $fetch("/api/carousels", {
   method: "GET",
   baseURL,
   params: {

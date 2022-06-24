@@ -74,7 +74,7 @@ ligthsGroup.add(directionalLight);
 scene.add(ligthsGroup);
 
 const floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(6, 6),
+  new THREE.PlaneGeometry(10, 10),
   new THREE.MeshLambertMaterial({ color: "#FFFDF5" })
 );
 floor.receiveShadow = true;
@@ -216,6 +216,7 @@ function animate() {
   controls.update();
   raycaster.setFromCamera(pointer, camera);
   ligthsGroup.rotation.y += 0.001;
+  resize();
 }
 
 function createScene(el) {
@@ -225,9 +226,6 @@ function createScene(el) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   controls = new OrbitControls(camera, renderer.domElement);
-  let minPan = new THREE.Vector3(-0.5, -0.5);
-  let maxPan = new THREE.Vector3(0.5, 0.5);
-  let _v = new THREE.Vector3();
   controls.enableDamping = true;
   controls.maxDistance = 1;
   controls.minDistance = 0.3;
@@ -242,8 +240,8 @@ function createScene(el) {
 }
 
 function resize() {
-  renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 }
@@ -251,6 +249,8 @@ function resize() {
 onMounted(() => {
   createScene(canvas.value);
   document.getElementById("tallasToggle").click();
+  console.log("window sizes: ", window.innerWidth, " ", window.innerHeight);
+  resize();
 });
 window.addEventListener("resize", resize);
 window.addEventListener("mousedown", onPointerClick);
@@ -261,7 +261,11 @@ window.addEventListener("pointermove", onPointerMove);
 
 <template>
   <div class="relative">
-    <img class="absolute ml-4 mt-4 w-36" src="/img/logoSecondary.png" alt="" />
+    <img
+      class="absolute z-10 ml-4 mt-4 w-36"
+      src="/img/logoSecondary.png"
+      alt=""
+    />
     <label
       id="tallasToggle"
       for="tallas-modal"
@@ -269,37 +273,42 @@ window.addEventListener("pointermove", onPointerMove);
       >Elegir Talla</label
     >
     <canvas ref="canvas"></canvas>
-  </div>
-  <input type="checkbox" id="tallas-modal" class="modal-toggle" />
-  <div class="modal">
-    <div class="modal-box max-w-xs">
-      <h3 class="pb-4 text-lg">Seleccionar la talla</h3>
-      <div class="mx-auto flex justify-between px-4">
-        <label
-          @click="getModelsUrl('4')"
-          for="tallas-modal"
-          class="btn btn-primary btn-circle text-2xl"
-          >4</label
-        >
-        <label
-          @click="getModelsUrl('6')"
-          for="tallas-modal"
-          class="btn btn-primary btn-circle text-2xl"
-          >6</label
-        >
-        <label
-          @click="getModelsUrl('8')"
-          for="tallas-modal"
-          class="btn btn-primary btn-circle text-2xl"
-          >8</label
-        >
+    <input type="checkbox" id="tallas-modal" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box max-w-xs">
+        <h3 class="pb-4 text-lg">Seleccionar la talla</h3>
+        <div class="mx-auto flex justify-between px-4">
+          <label
+            @click="getModelsUrl('4')"
+            for="tallas-modal"
+            class="btn btn-primary btn-circle text-2xl"
+            >4</label
+          >
+          <label
+            @click="getModelsUrl('6')"
+            for="tallas-modal"
+            class="btn btn-primary btn-circle text-2xl"
+            >6</label
+          >
+          <label
+            @click="getModelsUrl('8')"
+            for="tallas-modal"
+            class="btn btn-primary btn-circle text-2xl"
+            >8</label
+          >
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.webgl {
+html,
+body {
+  overflow: hidden;
+}
+
+canvas {
   position: fixed;
   top: 0;
   left: 0;

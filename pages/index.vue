@@ -4,7 +4,7 @@ let baseURL =
   process.env.NUXT_STRAPI_URL || config.strapiUrl || "http://localhost:1337";
 
 // fetching the body images
-const images = await $fetch("/api/carousel", {
+const images = await $fetch("/api/carousels", {
   method: "GET",
   baseURL,
   params: {
