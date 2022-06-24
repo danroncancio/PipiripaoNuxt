@@ -39,13 +39,15 @@ const modelUrls = {
 const canvas = ref(null);
 
 const scene = new THREE.Scene();
+scene.fog = new THREE.Fog("#FFFDF5", 1, 5);
+scene.background = new THREE.Color("#FFFDF5");
 const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
   0.1,
   1000
 );
-camera.position.set(1, 1, 1);
+camera.position.set(0.5, 1, 1);
 
 let renderer;
 let controls;
@@ -56,9 +58,11 @@ const pointer = new THREE.Vector2(1, 1);
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+let ligthsGroup = new THREE.Group();
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
 directionalLight.castShadow = true;
-directionalLight.shadow.mapSize.set(1024, 1024);
+directionalLight.shadow.mapSize.set(1024 * 4, 1024 * 4);
 directionalLight.shadow.camera.far = 15;
 directionalLight.shadow.camera.left = -7;
 directionalLight.shadow.camera.top = 7;
@@ -66,7 +70,8 @@ directionalLight.shadow.camera.right = 7;
 directionalLight.shadow.camera.bottom = -7;
 directionalLight.position.set(5, 5, 5);
 directionalLight.layers.set(0);
-scene.add(directionalLight);
+ligthsGroup.add(directionalLight);
+scene.add(ligthsGroup);
 
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(6, 6),
@@ -130,8 +135,6 @@ function loadGarments() {
   console.log("length: ", urls.length);
   for (let i = 0; i < urls.length; i++) {
     loadModel(urls[i]).then((res) => {
-      //clothesGroup.add(res.scene);
-      //console.log("resp obj: ", res);
       res.scene.traverse((node) => {
         node.layers.set(0);
         if (node.isMesh) {
@@ -212,14 +215,26 @@ function animate() {
   renderer.render(scene, camera);
   controls.update();
   raycaster.setFromCamera(pointer, camera);
+  ligthsGroup.rotation.y += 0.001;
 }
 
 function createScene(el) {
   renderer = new THREE.WebGLRenderer({ antialias: true, canvas: el });
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
   controls = new OrbitControls(camera, renderer.domElement);
+  let minPan = new THREE.Vector3(-0.5, -0.5);
+  let maxPan = new THREE.Vector3(0.5, 0.5);
+  let _v = new THREE.Vector3();
+  controls.enableDamping = true;
+  controls.maxDistance = 1;
+  controls.minDistance = 0.3;
+  controls.enablePan = false;
   controls.autoRotate = false;
+  controls.maxPolarAngle = Math.PI / 2;
+  controls.minPolarAngle = 0.9;
   controls.target = new THREE.Vector3(0, 0.65, 0);
 
   resize();
@@ -228,27 +243,66 @@ function createScene(el) {
 
 function resize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 }
 
 onMounted(() => {
   createScene(canvas.value);
+  document.getElementById("tallasToggle").click();
 });
-
 window.addEventListener("resize", resize);
-window.addEventListener("click", onPointerClick);
+window.addEventListener("mousedown", onPointerClick);
 window.addEventListener("pointermove", onPointerMove);
+
 //window.addEventListener("touchstart", onPointerTouch);
 </script>
 
 <template>
-  <button @click="changeGarment">Click Me!</button>
-  <button @click="showScene">Scene Me!</button>
-  <button @click="showGroups">Groups Me!</button>
-  <div></div>
-  <button @click="getModelsUrl('4')">4</button>
-  <button @click="getModelsUrl('6')" class="ml-2">6</button>
-  <button @click="getModelsUrl('8')" class="ml-2">8</button>
-  <canvas ref="canvas"></canvas>
+  <div class="relative">
+    <img class="absolute ml-4 mt-4 w-36" src="/img/logoSecondary.png" alt="" />
+    <label
+      id="tallasToggle"
+      for="tallas-modal"
+      class="modal-button absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2"
+      >Elegir Talla</label
+    >
+    <canvas ref="canvas"></canvas>
+  </div>
+  <input type="checkbox" id="tallas-modal" class="modal-toggle" />
+  <div class="modal">
+    <div class="modal-box max-w-xs">
+      <h3 class="pb-4 text-lg">Seleccionar la talla</h3>
+      <div class="mx-auto flex justify-between px-4">
+        <label
+          @click="getModelsUrl('4')"
+          for="tallas-modal"
+          class="btn btn-primary btn-circle text-2xl"
+          >4</label
+        >
+        <label
+          @click="getModelsUrl('6')"
+          for="tallas-modal"
+          class="btn btn-primary btn-circle text-2xl"
+          >6</label
+        >
+        <label
+          @click="getModelsUrl('8')"
+          for="tallas-modal"
+          class="btn btn-primary btn-circle text-2xl"
+          >8</label
+        >
+      </div>
+    </div>
+  </div>
 </template>
+
+<style scoped>
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+</style>
