@@ -190,7 +190,10 @@ function onPointerMove(event) {
 }
 
 function onPointerClick(event) {
-  //console.log(scene);
+  pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(pointer, camera);
+
   if (activeGarmentID !== undefined) {
     const object3D = scene.getObjectByProperty("uuid", activeGarmentID);
     const intersects = raycaster.intersectObject(object3D, true);
@@ -198,6 +201,10 @@ function onPointerClick(event) {
       changeGarment();
     }
   }
+}
+
+function onPointerTouch(event) {
+  console.log("touch ", event);
 }
 
 function animate() {
@@ -232,6 +239,7 @@ onMounted(() => {
 window.addEventListener("resize", resize);
 window.addEventListener("click", onPointerClick);
 window.addEventListener("pointermove", onPointerMove);
+//window.addEventListener("touchstart", onPointerTouch);
 </script>
 
 <template>
