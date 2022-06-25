@@ -19,48 +19,89 @@ const state = reactive({
 const modelUrls = {
   // 4
   "/models/4/Modelo.glb": [
-    "/models/4/CT7527/Blanco.glb",
-    "/models/4/CT7527/Negro.glb",
-    "/models/4/OF0426/Blanco.glb",
-    "/models/4/OF0426/Negro.glb",
+    "/models/4/CT7527/Crema.glb",
+    //
+    "/models/4/BC5600/Naranja.glb",
+    "/models/4/BC5600/Verde.glb",
+    //
+    "/models/4/CC1815/Azul.glb",
+    "/models/4/CC1815/Roja.glb",
+    //
+    "/models/4/CI5527/Azul.glb",
+    "/models/4/CI5527/Cafe.glb",
+    //
+    "/models/4/OF5600/Verde.glb",
+    "/models/4/OF5600/Vino.glb",
+    //
+    "/models/4/PC7527/Crema.glb",
+    "/models/4/PC7527/Negro.glb",
   ],
   // 6
   "/models/6/Modelo.glb": [
-    "/models/6/PC0426/Rojo.glb",
-    "/models/6/PC0426/Negro.glb",
+    "/models/6/CT7527/Crema.glb",
+    "/models/6/CT7527/Negro.glb",
+    //
+    "/models/6/BC5600/Naranja.glb",
+    "/models/6/BC5600/Verde.glb",
+    //
+    "/models/6/CC1815/Azul.glb",
+    "/models/6/CC1815/Roja.glb",
+    //
+    "/models/6/CI5527/Azul.glb",
+    "/models/6/CI5527/Cafe.glb",
+    //
+    "/models/6/OF5600/Verde.glb",
+    "/models/6/OF5600/Vino.glb",
+    //
+    "/models/6/PC7527/Crema.glb",
+    "/models/6/PC7527/Negro.glb",
   ],
   // 8
   "/models/8/Modelo.glb": [
-    "/models/8/PC0426/Rojo.glb",
-    "/models/8/PC0426/Gris.glb",
+    "/models/8/CT7527/Crema.glb",
+    "/models/8/CT7527/Negro.glb",
+    //
+    "/models/8/BC5600/Naranja.glb",
+    "/models/8/BC5600/Verde.glb",
+    //
+    "/models/8/CC1815/Azul.glb",
+    "/models/8/CC1815/Roja.glb",
+    //
+    "/models/8/CI5527/Azul.glb",
+    "/models/8/CI5527/Cafe.glb",
+    //
+    "/models/8/OF5600/Verde.glb",
+    "/models/8/OF5600/Vino.glb",
+    //
+    "/models/8/PC7527/Crema.glb",
+    "/models/8/PC7527/Negro.glb",
   ],
 };
 
 const canvas = ref(null);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog("#FFFDF5", 1, 5);
-scene.background = new THREE.Color("#FFFDF5");
+scene.fog = new THREE.Fog("#b7faed", 1, 5);
+scene.background = new THREE.Color("#b7faed");
 const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
   0.1,
   1000
 );
-camera.position.set(0.5, 1, 1);
+camera.position.set(0.5, 1.5, 1);
 
 let renderer;
 let controls;
 const raycaster = new THREE.Raycaster();
-raycaster.layers.set(0);
 const pointer = new THREE.Vector2(1, 1);
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
 scene.add(ambientLight);
 
 let ligthsGroup = new THREE.Group();
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.castShadow = true;
 directionalLight.shadow.mapSize.set(1024 * 4, 1024 * 4);
 directionalLight.shadow.camera.far = 15;
@@ -69,13 +110,12 @@ directionalLight.shadow.camera.top = 7;
 directionalLight.shadow.camera.right = 7;
 directionalLight.shadow.camera.bottom = -7;
 directionalLight.position.set(5, 5, 5);
-directionalLight.layers.set(0);
 ligthsGroup.add(directionalLight);
 scene.add(ligthsGroup);
 
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(10, 10),
-  new THREE.MeshLambertMaterial({ color: "#FFFDF5" })
+  new THREE.MeshLambertMaterial({ color: "#f482c5" })
 );
 floor.receiveShadow = true;
 floor.rotation.x = MathUtils.degToRad(-90);
@@ -98,6 +138,19 @@ loader.setDRACOLoader(dracoLoader);
 
 function getModelsUrl(size) {
   activeSize = size;
+  switch (activeSize) {
+    case "4":
+      controls.target.set(0, 0.65, 0);
+      break;
+    case "6":
+      controls.target.set(0, 0.75, 0);
+      break;
+    case "8":
+      controls.target.set(0, 0.9, 0);
+      break;
+    default:
+      break;
+  }
   for (let key in modelUrls) {
     if (key.includes(size)) {
       activeKidUrl = key;
@@ -119,7 +172,6 @@ function loadKid(url) {
   let kidUrl = url;
   loadModel(kidUrl).then((res) => {
     res.scene.traverse((node) => {
-      node.layers.set(0);
       if (node.isMesh) {
         node.castShadow = true;
         node.receiveShadow = true;
@@ -136,7 +188,6 @@ function loadGarments() {
   for (let i = 0; i < urls.length; i++) {
     loadModel(urls[i]).then((res) => {
       res.scene.traverse((node) => {
-        node.layers.set(0);
         if (node.isMesh) {
           node.castShadow = true;
           node.receiveShadow = true;
@@ -229,7 +280,7 @@ function createScene(el) {
   controls.enableDamping = true;
   controls.maxDistance = 1;
   controls.minDistance = 0.3;
-  controls.enablePan = false;
+  controls.enablePan = true;
   controls.autoRotate = false;
   controls.maxPolarAngle = Math.PI / 2;
   controls.minPolarAngle = 0.9;

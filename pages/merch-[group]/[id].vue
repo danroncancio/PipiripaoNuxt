@@ -250,10 +250,7 @@ function addCart(sku, url, title, size, color, quantity, stock, price) {
         <div class="modal modal-bottom sm:modal-middle">
             <div class="modal-box">
                 <h3 class="font-bold text-lg">Guía de Tallas</h3>
-                <!--<img :src="baseURL + guide" alt="">-->
-                <LazyClientOnly>
-                  <Scene />
-                </LazyClientOnly>
+                <img :src="baseURL + guide" alt="">
                 <div class="modal-action">
                     <label for="modal" class="btn btn-primary">Meow!</label>
                 </div>

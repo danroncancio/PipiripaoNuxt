@@ -1,7 +1,6 @@
 <script setup>
 const config = useRuntimeConfig();
-let baseURL =
-  process.env.NUXT_STRAPI_URL || config.strapiUrl || "http://localhost:1337";
+let baseURL = config.strapiUrl || "http://localhost:1337";
 const route = useRoute();
 
 let clothing;
@@ -58,8 +57,7 @@ if (route.params.group.includes("-")) {
 
 console.log(clothing);
 
-let products = [];
-
+let products = []; //
 clothing.forEach((ele) => {
   console.log(ele);
   for (let i = 0; i < ele.attributes.ProductImages.length; i++) {
@@ -86,8 +84,7 @@ clothing.forEach((ele) => {
     console.log(ele.attributes.ProductImages[i].Color);
   }
 });
-
-console.log("final array", products);
+//console.log("final array", products);
 </script>
 
 <template>

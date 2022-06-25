@@ -28,12 +28,6 @@ html,
 body {
   overflow: hidden;
 }
-.webgl {
-  position: fixed;
-  top: 0;
-  left: 0;
-  outline: none;
-}
 canvas {
   display: block;
 }
